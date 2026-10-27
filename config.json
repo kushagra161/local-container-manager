@@ -1,0 +1,6 @@
+{
+    "docker_host": "unix:///var/run/docker.sock",
+    "log_level": "INFO",
+    "default_detach": true,
+    "app_name": "Local Container Manager"
+}
