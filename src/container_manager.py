@@ -24,7 +24,7 @@ class ContainerManager:
         try:
             result = subprocess.run(
                 ["docker", "info"],
-                capture_output=True, text=True, timeout=10
+                capture_output=True, text=True, timeout=30
             )
             if result.returncode != 0:
                 raise EnvironmentError(

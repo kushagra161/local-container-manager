@@ -3,6 +3,9 @@ cli.py
 Command-Line Interface for Local Container Manager
 Student: Kushagra Kaushik | Roll: S24BCAU0112
 """
+import sys
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8')
 
 import argparse
 import sys
@@ -66,9 +69,9 @@ def cmd_run(manager: ContainerManager, args):
     )
     if result["success"]:
         cid = result.get("container_id", result["stdout"][:12])
-        print(f"  ✔ Container started! ID: {cid}")
+        print(f"  [OK] Container started! ID: {cid}")
     else:
-        print(f"  ✘ Error: {result['stderr']}")
+        print(f"  [ERR] Error: {result['stderr']}")
         sys.exit(1)
 
 
@@ -76,9 +79,9 @@ def cmd_start(manager: ContainerManager, args):
     """Handler: lcm start"""
     result = manager.start_container(args.container)
     if result["success"]:
-        print(f"  ✔ Container '{args.container}' started.")
+        print(f"  [OK] Container '{args.container}' started.")
     else:
-        print(f"  ✘ Error: {result['stderr']}")
+        print(f"  [ERR] Error: {result['stderr']}")
         sys.exit(1)
 
 
@@ -86,9 +89,9 @@ def cmd_stop(manager: ContainerManager, args):
     """Handler: lcm stop"""
     result = manager.stop_container(args.container)
     if result["success"]:
-        print(f"  ✔ Container '{args.container}' stopped.")
+        print(f"  [OK] Container '{args.container}' stopped.")
     else:
-        print(f"  ✘ Error: {result['stderr']}")
+        print(f"  [ERR] Error: {result['stderr']}")
         sys.exit(1)
 
 
@@ -118,9 +121,9 @@ def cmd_remove(manager: ContainerManager, args):
             return
     result = manager.remove_container(args.container, force=args.force)
     if result["success"]:
-        print(f"  ✔ Container '{args.container}' removed.")
+        print(f"  [OK] Container '{args.container}' removed.")
     else:
-        print(f"  ✘ Error: {result['stderr']}")
+        print(f"  [ERR] Error: {result['stderr']}")
         sys.exit(1)
 
 
@@ -132,7 +135,7 @@ def cmd_logs(manager: ContainerManager, args):
         if result["stderr"]:
             print(result["stderr"])
     else:
-        print(f"  ✘ Error: {result['stderr']}")
+        print(f"  [ERR] Error: {result['stderr']}")
         sys.exit(1)
 
 
@@ -160,9 +163,9 @@ def cmd_pull(manager: ContainerManager, args):
     print(f"  Pulling image: {args.image} ...")
     result = manager.pull_image(args.image)
     if result["success"]:
-        print(f"  ✔ Image '{args.image}' pulled successfully.")
+        print(f"  [OK] Image '{args.image}' pulled successfully.")
     else:
-        print(f"  ✘ Error: {result['stderr']}")
+        print(f"  [ERR] Error: {result['stderr']}")
         sys.exit(1)
 
 
@@ -251,7 +254,7 @@ def main():
     try:
         manager = ContainerManager()
     except EnvironmentError as e:
-        print(f"\n  ✘ {e}\n")
+        print(f"\n  [ERR] {e}\n")
         sys.exit(1)
 
     args.func(manager, args)
